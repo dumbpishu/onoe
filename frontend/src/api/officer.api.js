@@ -1,0 +1,19 @@
+import api from "@/lib/axios";
+
+export const createOfficer = async (officerData) => {
+    try {
+        const response = await api.post("/officers/create", officerData);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to create officer");
+    }
+}
+
+export const loginOfficer = async (credentials) => {
+    try {
+        const response = await api.post("/officers/login", credentials);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to login");
+    }
+};
