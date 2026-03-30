@@ -1,8 +1,8 @@
 import express from "express";
-import { getBoothsByACCodeService } from "../services/booths.service.js";
+import { getBoothsByACSCode } from "../controllers/booths.controller.js";
 
 const router = express.Router();
 
-router.get("/:acs_code", getBoothsByACCodeService);
+router.get("/:acs_code", getBoothsByACSCode);
 
 export default router;
