@@ -4,35 +4,35 @@ const userSchema = new Schema(
     {
         state: {
             type: String,
-            required: true
+            // required: true
         },
         district: {
             type: String,
-            required: true
+            // required: true
         },
         assembley: {
             type: String,
-            required: true
+            // required: true
         },
         boothNumber: {
             type: String,
-            required: true
+            // required: true
         },
         consituency: {
             type: String,
-            required: true
+            // required: true
         },
         firstName: {
             type: String,
             minlength: 3,
             maxlength: 50,
-            required: true
+            // required: true
         },
         lastName: {
             type: String,
             minlength: 3,
             maxlength: 50,
-            required: true
+            // required: true
         },
         imageUrl: {
             type: String,
@@ -42,20 +42,20 @@ const userSchema = new Schema(
             type: String,
             minlength: 6,
             maxlength: 1024,
-            required: true
+            // required: true
         },
 
         relative: {
             type: {
                 type: String,
                 enum: ["father", "mother", "spouse", "brother", "sister", "son", "daughter"],
-                required: true
+                // required: true
             },
             name: {
                 type: String,
                 minlength: 3,
                 maxlength: 50,
-                required: true
+                // required: true
             }
         },
 
@@ -64,7 +64,7 @@ const userSchema = new Schema(
             trim: true,
             minlength: 10,
             maxlength: 10,
-            required: true
+            // required: true
         },
         email: {
             type: String,
@@ -73,7 +73,7 @@ const userSchema = new Schema(
             minlength: 5,
             maxlength: 255,
             unique: true,
-            required: true
+            // required: true
         },
         aadharNumber: {
             type: String,
@@ -81,54 +81,54 @@ const userSchema = new Schema(
             minlength: 12,
             maxlength: 12,
             unique: true,
-            required: true
+            // required: true
         },
         
         gender: {
             type: String,
             enum: ["male", "female", "other"],
-            required: true
+            // required: true
         },
         dob: {
             type: Date,
-            required: true
+            // required: true
         },
 
         address: {
             houseNumber: {
                 type: String,
-                required: true
+                // required: true
             },
             village: {
                 type: String,
-                required: true
+                // required: true
             },
             tehsil: {
                 type: String,
-                required: true
+                // required: true
             },
             postOffice: {
                 type: String,
-                required: true
+                // required: true
             },
             policeStation: {
                 type: String,
-                required: true
+                // required: true
             },
             district: {
                 type: String,
-                required: true
+                // required: true
             },
             state: {
                 type: String,
-                required: true
+                // required: true
             },
             pincode: {
                 type: String,
                 trim: true,
                 minlength: 6,
                 maxlength: 6,
-                required: true
+                // required: true
             }
         },
 
@@ -136,7 +136,7 @@ const userSchema = new Schema(
             type: {
                 type: String,
                 enum: ["none", "visual", "hearing", "locomotor", "mental"],
-                required: true
+                // required: true
             },
             certificate: {
                 type: String,
@@ -149,7 +149,7 @@ const userSchema = new Schema(
                 level: {
                     type: String,
                     enum: ["BLO", "ERO", "DEO", "AI"],
-                    required: true
+                    // required: true
                 },
                 status: {
                     type: String,
@@ -170,7 +170,7 @@ const userSchema = new Schema(
         referenceId: {
             type: String,
             unique: true,
-            required: true
+            // required: true
         }
     }
 );

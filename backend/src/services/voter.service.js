@@ -20,17 +20,28 @@ export const createVoterService = async (aadharNumber) => {
         throw new ApiError(403, "User is not fully verified by all levels");
     }
 
-    const voterId = generateVoterId(user.state);
+    let uniqueVoterId;
+    while (true) {
+        uniqueVoterId = generateVoterId(user.state);
+        const existingVoter = await Voter.findOne({ uniqueVoterId });
+        if (!existingVoter) {
+            break;
+        }
+    }
 
-    const voter = await Voter.create({
-        user: user._id,
-        aadharNumber: user.aadharNumber,
-        voterId,
-        state: user.state,
-        pcCode: user.pcCode,
-        acsCode: user.acsCode,
-        boothCode: user.boothCode,
-    });
+    const userObj = user.toObject();
+
+    delete userObj._id;
+    delete userObj.__v;
+    delete userObj.verification;
+
+    userObj.uniqueVoterId = uniqueVoterId;
+
+    const voter = await Voter.create(userObj);
+
+    if (!voter) {
+        throw new ApiError(500, "Failed to create voter");
+    }
 
     return voter;
 };
