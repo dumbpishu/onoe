@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const voterSchema = new Schema(
+const userSchema = new Schema(
     {
         state: {
             type: String,
@@ -175,4 +175,4 @@ const voterSchema = new Schema(
     }
 );
 
-export const Voter = model("Voter", voterSchema);
+export const User = model("User", userSchema);

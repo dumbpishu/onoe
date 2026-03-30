@@ -18,11 +18,11 @@ app.get("/", (req, res) => {
 });
 
 import officerRoutes from "./routes/officer.route.js";
-import voterRoutes from "./routes/voter.route.js";
+import userRoutes from "./routes/user.route.js";
 import stateRoutes from "./routes/state.route.js";
 import pcsRoutes from "./routes/pcs.route.js";
 
-app.use("/api/voters", voterRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/officers", officerRoutes);
 app.use("/api/states", stateRoutes);
 app.use("/api/pcs", pcsRoutes);
