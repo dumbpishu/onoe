@@ -12,6 +12,14 @@ export const getPCSService = async (state_code) => {
 
     console.log("PCS COUNT:", count);
 
+    const sample = await mongoose.connection.db
+        .collection("pcs")
+        .findOne();
+
+    console.log("SAMPLE:", sample);
+    console.log("TYPE:", typeof sample.state_code);
+    console.log("VALUE:", sample.state_code);
+
     const pcsList = await mongoose.connection.db.collection("pcs").find({ state_code }).toArray();
 
     if (!pcsList || pcsList.length === 0) {
