@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { ApiError } from "../utils/ApiError.js";
 
 export const getPCSService = async (state_code) => {
+    console.log("getPCSService called with state_code:", state_code); // Debug log
     if (!state_code) {
         throw new ApiError(400, "State code is required");
     }
