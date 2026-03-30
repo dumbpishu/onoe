@@ -1,0 +1,17 @@
+import mongoose from "mongoose";
+import { ApiError } from "../utils/ApiError.js";
+
+export const getPCSService = async (state_code) => {
+    if (!state_code) {
+        throw new ApiError(400, "State code is required");
+    }
+    
+    const pcsCollection = mongoose.connection.db.collection("pcs");
+    const pcsList = await pcsCollection.find({ state_code }).toArray();
+
+    if (!pcsList || pcsList.length === 0) {
+        throw new ApiError(404, "PCS not found for the given state code");
+    }
+
+    return pcsList;
+}
