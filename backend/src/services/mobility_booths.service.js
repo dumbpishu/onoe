@@ -13,14 +13,10 @@ export const nearestMobilityBoothsService = async (latitude, longitude) => {
                     type: "Point",
                     coordinates: [longitude, latitude]
                 },
-                $maxDistance: 5000 // 5 kilometers
+                $maxDistance: 20000 // 5 kilometers
             }
         }
     }).toArray();
-
-    if (!mobilityBooths || mobilityBooths.length === 0) {
-        throw new ApiError(404, "No mobility booths found near the given location.");
-    }
 
     return mobilityBooths;
 }

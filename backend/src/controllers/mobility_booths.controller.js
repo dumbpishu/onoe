@@ -7,5 +7,9 @@ export const nearestMobilityBooths = asyncHandler(async (req, res) => {
 
     const mobilityBooths = await nearestMobilityBoothsService(parseFloat(lat), parseFloat(long));
 
+    if (mobilityBooths.length === 0) {
+        return res.json(new ApiResponse(true, "No mobility booths found within 20 kilometers.", []));
+    }
+
     res.json(new ApiResponse(true, "Nearest mobility booths retrieved successfully.", mobilityBooths));
 })
