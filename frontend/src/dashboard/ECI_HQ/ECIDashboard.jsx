@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, UserPlus, Building2, MapPin, BarChart3, Settings, RefreshCw } from "lucide-react";
+import { Users, UserPlus, Building2, MapPin, BarChart3, Settings, RefreshCw, UserCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getCurrentOfficer, getMyOfficers } from "@/api/officer.api";
 import { Link } from "react-router-dom";
@@ -119,6 +119,29 @@ export const ECIDashboard = () => {
                             <Button className="bg-white text-[#000080] hover:bg-white/90 border-0">
                                 <UserPlus className="w-4 h-4 mr-2" />
                                 Create New CEO
+                            </Button>
+                        </Link>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-[#138808] to-[#000080] text-white">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <UserCheck className="w-5 h-5" />
+                            All Voters
+                        </CardTitle>
+                        <CardDescription className="text-white/80">
+                            View all registered voters
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-white/80 mb-4">
+                            Access the complete list of voters registered across all states.
+                        </p>
+                        <Link to="/dashboard/voters">
+                            <Button className="bg-white text-[#138808] hover:bg-white/90 border-0">
+                                <Users className="w-4 h-4 mr-2" />
+                                View All Voters
                             </Button>
                         </Link>
                     </CardContent>

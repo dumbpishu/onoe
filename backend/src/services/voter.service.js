@@ -61,3 +61,26 @@ export const loginVoterService = async (uniqueVoterId, password) => {
 
     return { voter, token };
 }
+
+export const getAllVotersService = async (page = 1, limit = 10, filter = {}) => {
+    const skip = (page - 1) * limit;
+
+    const [voters, total] = await Promise.all([
+        Voter.find(filter)
+            .select("-password")
+            .skip(skip)
+            .limit(limit)
+            .lean(),
+        Voter.countDocuments(filter)
+    ]);
+
+    return {
+        voters,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit)
+        }
+    };
+};

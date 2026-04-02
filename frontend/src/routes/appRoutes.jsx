@@ -6,7 +6,9 @@ import { LandingPage } from "../pages/LandingPage";
 import { Login } from "../pages/auth/Login";
 import { MyOfficers } from "../dashboard/MyOfficers";
 import { CreateOfficer } from "../dashboard/CreateOfficer";
+import { AllVoters } from "../dashboard/AllVoters";
 import { ECIDashboard } from "../dashboard/ECI_HQ/ECIDashboard";
+import { ProtectedRoutes } from "../components/gaurds/ProtectedRoutes";
 import { CEODashboard } from "../dashboard/CEO/CEODashboard";
 import { DEODashboard } from "../dashboard/DEO/DEODashboard";
 import { ERODashboard } from "../dashboard/ERO/ERODashboard";
@@ -68,6 +70,15 @@ export const appRoutes = createBrowserRouter([
             {
                 path: "create-officer",
                 element: <CreateOfficer />
+            },
+            {
+                element: <ProtectedRoutes allowedRoles={["ECI HQ"]} />,
+                children: [
+                    {
+                        path: "voters",
+                        element: <AllVoters />
+                    }
+                ]
             }
         ]
     }

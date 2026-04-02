@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { getCurrentOfficer } from "@/api/officer.api";
-import { User, Users, LogOut, LayoutDashboard } from "lucide-react";
+import { User, Users, LogOut, LayoutDashboard, UserCheck } from "lucide-react";
 
 const roleConfig = {
     "ECI HQ": {
@@ -143,6 +143,21 @@ export const DashboardLayout = () => {
                                 >
                                     <User className="w-5 h-5" />
                                     Create {config.createRole}
+                                </Link>
+                            </li>
+                        )}
+                        {officer.role === "ECI HQ" && (
+                            <li>
+                                <Link
+                                    to="/dashboard/voters"
+                                    className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${
+                                        location.pathname === "/dashboard/voters"
+                                            ? "bg-white/20 text-white"
+                                            : "text-white/80 hover:bg-white/10 hover:text-white"
+                                    }`}
+                                >
+                                    <UserCheck className="w-5 h-5" />
+                                    All Voters
                                 </Link>
                             </li>
                         )}
