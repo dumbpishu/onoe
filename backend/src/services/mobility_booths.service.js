@@ -121,3 +121,7 @@ export const deleteMobilityBoothService = async (id) => {
 
     return { message: "Mobility booth deleted successfully" };
 }
+
+export const getMobilityBoothsCount = async () => {
+    return await mongoose.connection.db.collection("mobility_booths").countDocuments();
+}

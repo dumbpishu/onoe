@@ -94,3 +94,7 @@ export const getAllACsListService = async () => {
     const acs = await mongoose.connection.db.collection("acs").find({}).toArray();
     return acs;
 }
+
+export const getACsCount = async () => {
+    return await mongoose.connection.db.collection("acs").countDocuments();
+}

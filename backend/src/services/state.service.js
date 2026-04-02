@@ -89,3 +89,7 @@ export const deleteStateService = async (id) => {
 
     return { message: "State deleted successfully" };
 }
+
+export const getStatesCount = async () => {
+    return await mongoose.connection.db.collection("states").countDocuments();
+}

@@ -91,3 +91,7 @@ export const getAllPCsListService = async () => {
     const pcsList = await mongoose.connection.db.collection("pcs").find({}).toArray();
     return pcsList;
 }
+
+export const getPCsCount = async () => {
+    return await mongoose.connection.db.collection("pcs").countDocuments();
+}
