@@ -59,8 +59,8 @@ export const createUserService = async (userData) => {
         { level: "BLO", status: "pending", remarks: "", verifiedAt: null },
         { level: "ERO", status: "pending", remarks: "", verifiedAt: null },
         { level: "DEO", status: "pending", remarks: "", verifiedAt: null },
-        // { level: "AI", status: "pending", remarks: "Verification in progress", verifiedAt: null }
-        { level: "AI", status: "verified", remarks: "Auto-verified by AI system - No similar facial features found", verifiedAt: new Date() }
+        { level: "AI", status: "pending", remarks: "Verification in progress", verifiedAt: null }
+        //{ level: "AI", status: "verified", remarks: "Auto-verified by AI system - No similar facial features found", verifiedAt: new Date() }
     ];
 
     // check if user with aadhar number, phone number or email already exists
@@ -90,7 +90,7 @@ export const createUserService = async (userData) => {
         throw new ApiError(500, "Failed to create user");
     }
 
-    // performAsyncVerification(user._id, userData.imageUrl);
+    performAsyncVerification(user._id, userData.imageUrl);
 
     return user;
 };
