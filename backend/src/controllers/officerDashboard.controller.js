@@ -9,7 +9,9 @@ import {
     verifyUserByERO,
     rejectUserByERO,
     verifyUserByDEO,
-    rejectUserByDEO
+    rejectUserByDEO,
+    convertVerifiedUserToVoter,
+    convertAllVerifiedUsersToVoters
 } from "../services/officerDashboard.service.js";
 
 export const getPendingUsers = asyncHandler(async (req, res) => {
@@ -64,7 +66,21 @@ export const verifyUser = asyncHandler(async (req, res) => {
     const userData = result.toObject ? result.toObject() : result;
     const { password, ...safeUser } = userData;
 
-    return res.status(200).json(new ApiResponse(200, responseMessage, safeUser));
+    return res.status(200).json(new ApiResponse(200, `User rejected by ${officer.role} successfully`, safeUser));
+});
+
+export const convertToVoter = asyncHandler(async (req, res) => {
+    const { userId } = req.body;
+    
+    const voter = await convertVerifiedUserToVoter(userId);
+    
+    return res.status(201).json(new ApiResponse(201, "User converted to voter successfully", voter));
+});
+
+export const convertAllVerifiedToVoters = asyncHandler(async (req, res) => {
+    const result = await convertAllVerifiedUsersToVoters();
+    
+    return res.status(200).json(new ApiResponse(200, "Batch conversion completed", result));
 });
 
 export const rejectUser = asyncHandler(async (req, res) => {
