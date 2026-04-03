@@ -43,6 +43,7 @@ export const verifyUser = asyncHandler(async (req, res) => {
     const officer = req.officer;
 
     let result;
+    let responseMessage = `User verified by ${officer.role} successfully`;
 
     switch (officer.role) {
         case "BLO":
@@ -52,15 +53,18 @@ export const verifyUser = asyncHandler(async (req, res) => {
             result = await verifyUserByERO(userId, remarks);
             break;
         case "DEO":
-            result = await verifyUserByDEO(userId, remarks);
+            const deoResult = await verifyUserByDEO(userId, remarks);
+            result = deoResult.user;
+            responseMessage = "User verified and converted to Voter successfully!";
             break;
         default:
             throw new Error("You don't have permission to verify users");
     }
 
-    const { password, ...safeUser } = result.toObject ? result.toObject() : result;
+    const userData = result.toObject ? result.toObject() : result;
+    const { password, ...safeUser } = userData;
 
-    return res.status(200).json(new ApiResponse(200, `User verified by ${officer.role} successfully`, safeUser));
+    return res.status(200).json(new ApiResponse(200, responseMessage, safeUser));
 });
 
 export const rejectUser = asyncHandler(async (req, res) => {

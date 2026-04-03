@@ -335,7 +335,7 @@ export const convertUserToVoter = async (user) => {
 
     let uniqueVoterId;
     while (true) {
-        uniqueVoterId = generateVoterId(user.state);
+        uniqueVoterId = generateVoterId(user.state || "UNK");
         const existingVoter = await Voter.findOne({ uniqueVoterId });
         if (!existingVoter) {
             break;
@@ -348,7 +348,38 @@ export const convertUserToVoter = async (user) => {
     delete userObj.verification;
     userObj.uniqueVoterId = uniqueVoterId;
 
-    const voter = await Voter.create(userObj);
+    const voterData = {
+        state: userObj.state || "",
+        district: userObj.district || userObj.address?.district || "",
+        assembley: userObj.assembley || "",
+        boothNumber: userObj.boothNumber || "",
+        consituency: userObj.consituency || "",
+        firstName: userObj.firstName || "",
+        lastName: userObj.lastName || "",
+        imageUrl: userObj.imageUrl || "",
+        password: userObj.password || userObj.aadharNumber,
+        relative: userObj.relative || { type: "father", name: "Not Provided" },
+        phoneNumber: userObj.phoneNumber || "",
+        email: userObj.email || "",
+        aadharNumber: userObj.aadharNumber || "",
+        gender: userObj.gender || "other",
+        dob: userObj.dob || new Date(),
+        address: {
+            houseNumber: userObj.address?.houseNumber || "",
+            village: userObj.address?.village || "",
+            tehsil: userObj.address?.tehsil || "",
+            postOffice: userObj.address?.postOffice || "",
+            policeStation: userObj.address?.policeStation || "",
+            district: userObj.address?.district || userObj.district || "",
+            state: userObj.address?.state || userObj.state || "",
+            pincode: userObj.address?.pincode || ""
+        },
+        disability: userObj.disability || { type: "none", certificate: "" },
+        referenceId: userObj.referenceId || "",
+        uniqueVoterId: uniqueVoterId
+    };
+
+    const voter = await Voter.create(voterData);
     
     if (!voter) {
         throw new ApiError(500, "Failed to create voter");

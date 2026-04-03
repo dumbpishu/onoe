@@ -31,10 +31,10 @@ export const checkVoterAndUserViaAadhar = asyncHandler(async (req, res) => {
     const { voter, user } = await checkVoterAndUserViaAadharService(aadharNumber);
 
     if (voter) {
-        return res.status(200).json(new ApiResponse(200, "Voter exists with this Aadhar number", { voter }));
+        return res.status(200).json(new ApiResponse(200, "Voter exists with this Aadhar number", { exists: true }));
     } else if (user) {
-        return res.status(200).json(new ApiResponse(200, "User exists with this Aadhar number", { user }));
+        return res.status(200).json(new ApiResponse(200, "User exists with this Aadhar number", { exists: true }));
     }
 
-    return res.status(200).json(new ApiResponse(200, "No voter or user exists with this Aadhar number"));
+    return res.status(200).json(new ApiResponse(200, "No voter or user exists with this Aadhar number", { exists: false }));
 })
