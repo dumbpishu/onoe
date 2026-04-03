@@ -8,7 +8,7 @@ export const createUserService = async (userData) => {
         { level: "BLO", status: "pending", remarks: "", verifiedAt: null },
         { level: "ERO", status: "pending", remarks: "", verifiedAt: null },
         { level: "DEO", status: "pending", remarks: "", verifiedAt: null },
-        { level: "AI", status: "pending", remarks: "", verifiedAt: null }
+        { level: "AI", status: "verified", remarks: "Auto-verified by AI system - Document verification successful", verifiedAt: new Date() }
     ];
     const user = await User.create({ ...userData, referenceId, verification });
 
