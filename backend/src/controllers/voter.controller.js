@@ -40,9 +40,9 @@ export const checkVoterAndUserViaAadhar = asyncHandler(async (req, res) => {
 })
 
 export const getVotersByBoothId = asyncHandler(async (req, res) => {
-    const { boothId } = req.query;
+    const { boothId } = req.body;
 
-    const voters = await getVotersByBoothIdService(boothId);
+    const voters = await getVotersByBoothIdService(String(boothId));
 
     return res.status(200).json(new ApiResponse(200, "Voters fetched successfully", voters));
 });
