@@ -63,7 +63,7 @@ export const createVoterService = async (aadharNumber) => {
         throw new ApiError(500, "Failed to create voter");
     }
 
-    performAsyncVoterVerification(user.imageUrl, user.aadharNumber);
+    // performAsyncVoterVerification(user.imageUrl, user.aadharNumber);
 
     return voter;
 };
