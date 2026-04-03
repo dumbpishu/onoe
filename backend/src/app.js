@@ -27,8 +27,10 @@ import voterRoutes from "./routes/voter.route.js";
 import mobilityBoothsRoutes from "./routes/mobility_booths.route.js";
 import dashboardRoutes from "./routes/dashboard.route.js";
 import officerDashboardRoutes from "./routes/officerDashboard.route.js";
+import pollingBoothOfficerRoutes from "./routes/pollingBoothOfficer.route.js";
 
 app.use("/api/mobility-booths", mobilityBoothsRoutes);
+app.use("/api/polling-booth-officers", pollingBoothOfficerRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/officers", officerRoutes);
