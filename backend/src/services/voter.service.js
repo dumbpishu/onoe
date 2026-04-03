@@ -92,3 +92,17 @@ export const checkVoterAndUserViaAadharService = async (aadharNumber) => {
     
     return { user, voter };
 }   
+
+export const getVotersByBoothIdService = async (boothId) => {
+    if (!boothId) {
+        throw new ApiError(400, "Please provide boothId");
+    }
+
+    let voters = await Voter.find({ mobilityBoothId: boothId }).select("-password");
+
+    if (voters.length === 0) {
+        voters = await Voter.find({ boothNumber: boothId }).select("-password");
+    }
+
+    return voters;
+};   

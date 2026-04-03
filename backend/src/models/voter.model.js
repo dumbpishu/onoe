@@ -154,6 +154,10 @@ const voterSchema = new Schema(
             type: String,
             unique: true,
             required: true
+        },
+        mobilityBoothId: {
+            type: String,
+            default: null
         }
     }
 );

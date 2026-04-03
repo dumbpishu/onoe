@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { loginVoterService, getAllVotersService, checkVoterAndUserViaAadharService } from "../services/voter.service.js";
+import { loginVoterService, getAllVotersService, checkVoterAndUserViaAadharService, getVotersByBoothIdService } from "../services/voter.service.js";
 
 export const loginVoter = asyncHandler(async (req, res) => {
     const { uniqueVoterId, password } = req.body;
@@ -38,3 +38,11 @@ export const checkVoterAndUserViaAadhar = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new ApiResponse(200, "No voter or user exists with this Aadhar number", { exists: false }));
 })
+
+export const getVotersByBoothId = asyncHandler(async (req, res) => {
+    const { boothId } = req.query;
+
+    const voters = await getVotersByBoothIdService(boothId);
+
+    return res.status(200).json(new ApiResponse(200, "Voters fetched successfully", voters));
+});
