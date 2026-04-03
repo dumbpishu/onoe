@@ -13,7 +13,7 @@ export const nearestMobilityBoothsService = async (latitude, longitude) => {
                     type: "Point",
                     coordinates: [longitude, latitude]
                 },
-                $maxDistance: 500000
+                $maxDistance: 50000
             }
         }
     }).toArray();
