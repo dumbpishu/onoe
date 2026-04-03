@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { loginVoterService, getAllVotersService, checkVoterAndUserViaAadharService, getVotersByBoothIdService } from "../services/voter.service.js";
+import { loginVoterService, getAllVotersService, checkVoterAndUserViaAadharService, getVotersByBoothIdService, assignMobilityBoothService, verifyMobilityBoothService, getMobilityBoothRequestsService } from "../services/voter.service.js";
 
 export const loginVoter = asyncHandler(async (req, res) => {
     const { uniqueVoterId, password } = req.body;
@@ -45,4 +45,26 @@ export const getVotersByBoothId = asyncHandler(async (req, res) => {
     const voters = await getVotersByBoothIdService(String(boothId));
 
     return res.status(200).json(new ApiResponse(200, "Voters fetched successfully", voters));
+});
+
+export const assignMobilityBooth = asyncHandler(async (req, res) => {
+    const { voterId, boothId } = req.body;
+
+    const voter = await assignMobilityBoothService(voterId, boothId);
+
+    return res.status(200).json(new ApiResponse(200, "Mobility booth assigned successfully", voter));
+});
+
+export const verifyMobilityBooth = asyncHandler(async (req, res) => {
+    const { voterId, isVerified } = req.body;
+
+    const voter = await verifyMobilityBoothService(voterId, isVerified);
+
+    return res.status(200).json(new ApiResponse(200, `Mobility booth ${isVerified ? 'verified' : 'rejected'} successfully`, voter));
+});
+
+export const getMobilityBoothRequests = asyncHandler(async (req, res) => {
+    const voters = await getMobilityBoothRequestsService();
+
+    return res.status(200).json(new ApiResponse(200, "Mobility booth requests fetched successfully", voters));
 });

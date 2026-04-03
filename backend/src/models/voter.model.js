@@ -158,6 +158,10 @@ const voterSchema = new Schema(
         mobilityBoothId: {
             type: String,
             default: null
+        },
+        isVerifiedMobilityBoothId: {
+            type: Boolean,
+            default: false
         }
     }
 );

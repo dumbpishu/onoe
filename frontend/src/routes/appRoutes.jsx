@@ -19,6 +19,7 @@ import { DEODashboard } from "../dashboard/DEO/DEODashboard";
 import { ERODashboard } from "../dashboard/ERO/ERODashboard";
 import { BLODashboard } from "../dashboard/BLO/BLODashboard";
 import { VerifyVoters } from "../dashboard/VerifyVoters";
+import { MobilityVerification } from "../dashboard/MobilityVerification";
 import { CreatePollingBoothOfficer } from "../dashboard/CreatePollingBoothOfficer";
 
 export const appRoutes = createBrowserRouter([
@@ -73,6 +74,10 @@ export const appRoutes = createBrowserRouter([
             {
                 path: "verify-voters",
                 element: <VerifyVoters />
+            },
+            {
+                path: "mobility-verification",
+                element: <MobilityVerification />
             },
             {
                 path: "officers",
