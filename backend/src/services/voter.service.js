@@ -107,6 +107,38 @@ export const getAllVotersService = async (page = 1, limit = 10, filter = {}) => 
     };
 };
 
+export const getVotersByStateService = async (state, page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+
+    const filter = { state };
+
+    const [voters, total, districts, assemblies] = await Promise.all([
+        Voter.find(filter)
+            .select("-password")
+            .skip(skip)
+            .limit(limit)
+            .lean(),
+        Voter.countDocuments(filter),
+        Voter.distinct("district", { state }),
+        Voter.distinct("assembley", { state })
+    ]);
+
+    return {
+        voters,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit)
+        },
+        stats: {
+            totalVoters: total,
+            totalDistricts: districts.length,
+            totalAssemblies: assemblies.length
+        }
+    };
+};
+
 export const checkVoterAndUserViaAadharService = async (aadharNumber) => {
     // check are user or voter exists with this aadhar number and tell where it exists
     const user = await User.findOne({ aadharNumber });

@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { loginVoterService, getAllVotersService, checkVoterAndUserViaAadharService, getVotersByBoothIdService, assignMobilityBoothService, verifyMobilityBoothService, getMobilityBoothRequestsService } from "../services/voter.service.js";
+import { loginVoterService, getAllVotersService, checkVoterAndUserViaAadharService, getVotersByBoothIdService, assignMobilityBoothService, verifyMobilityBoothService, getMobilityBoothRequestsService, getVotersByStateService } from "../services/voter.service.js";
 
 export const loginVoter = asyncHandler(async (req, res) => {
     const { uniqueVoterId, password } = req.body;
@@ -67,4 +67,18 @@ export const getMobilityBoothRequests = asyncHandler(async (req, res) => {
     const voters = await getMobilityBoothRequestsService();
 
     return res.status(200).json(new ApiResponse(200, "Mobility booth requests fetched successfully", voters));
+});
+
+export const getVotersByState = asyncHandler(async (req, res) => {
+    const { state } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    if (!state) {
+        return res.status(400).json(new ApiResponse(400, "State is required"));
+    }
+
+    const result = await getVotersByStateService(state, page, limit);
+
+    return res.status(200).json(new ApiResponse(200, "Voters fetched successfully", result));
 });

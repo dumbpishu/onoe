@@ -9,6 +9,15 @@ export const getAllVoters = async (params = {}) => {
     }
 };
 
+export const getVotersByState = async (state, page = 1, limit = 10) => {
+    try {
+        const response = await api.get("/voters/by-state", { params: { state, page, limit } });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to fetch voters by state");
+    }
+};
+
 export const getMobilityRequests = async () => {
     try {
         const response = await api.get("/voters/mobility/requests");

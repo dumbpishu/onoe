@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ApiError } from "../utils/ApiError.js";
+import { Officer } from "../models/officer.model.js";
 
 export const getDashboardStats = async () => {
     const [votersCount, ceosCount, deosCount, blosCount, acsCount, pcsCount, statesCount, boothsCount, mobilityBoothsCount] = await Promise.all([
@@ -24,5 +25,23 @@ export const getDashboardStats = async () => {
         states: statesCount,
         booths: boothsCount,
         mobilityBooths: mobilityBoothsCount
+    };
+};
+
+export const getCEODashboardStats = async (state) => {
+    const [votersCount, deosCount, erosCount, blosCount, boothsCount] = await Promise.all([
+        mongoose.connection.db.collection("voters").countDocuments({ state }),
+        mongoose.connection.db.collection("officers").countDocuments({ role: "DEO", "postingAddress.state": state }),
+        mongoose.connection.db.collection("officers").countDocuments({ role: "ERO", "postingAddress.state": state }),
+        mongoose.connection.db.collection("officers").countDocuments({ role: "BLO", "postingAddress.state": state }),
+        mongoose.connection.db.collection("booths").countDocuments({ state })
+    ]);
+
+    return {
+        voters: votersCount,
+        deos: deosCount,
+        eros: erosCount,
+        blos: blosCount,
+        booths: boothsCount
     };
 };

@@ -92,7 +92,7 @@ export const appRoutes = createBrowserRouter([
                 element: <CreatePollingBoothOfficer />
             },
             {
-                element: <ProtectedRoutes allowedRoles={["ECI HQ"]} />,
+                element: <ProtectedRoutes allowedRoles={["ECI HQ", "CEO"]} />,
                 children: [
                     {
                         path: "voters",

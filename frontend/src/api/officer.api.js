@@ -53,3 +53,12 @@ export const getECIStats = async () => {
         throw new Error(error.response?.data?.message || "Failed to fetch stats");
     }
 };
+
+export const getCEOStats = async () => {
+    try {
+        const response = await api.get("/dashboard/ceo-stats");
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to fetch CEO stats");
+    }
+};
