@@ -5,26 +5,33 @@ import axios from "axios";
 import FormData from "form-data";
 import { Voter } from "../models/voter.model.js";
 
-const performAsyncVerification = async (userId, imageUrl) => {
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const performAsyncVerification = async (userId, imageUrl, attempt = 1) => {
+    const MAX_RETRIES = 3; // 1 initial + 2 retries
+
     try {
-        console.log("AI Verification started for:", userId);
+        console.log(`AI Verification started (Attempt ${attempt}) for:`, userId);
+
+        if (!imageUrl) {
+            throw new Error("Image URL missing");
+        }
 
         let formData = new FormData();
 
-        if (imageUrl) {
-            const imageResponse = await axios.get(imageUrl, {
-                responseType: "arraybuffer"
-            });
+        const imageResponse = await axios.get(imageUrl, {
+            responseType: "arraybuffer",
+            timeout: 300000 // image fetch timeout (5 mins)
+        });
 
-            formData.append("file", Buffer.from(imageResponse.data), "image.jpg");
-        }
+        formData.append("file", Buffer.from(imageResponse.data), "image.jpg");
 
         const response = await axios.post(
             `${process.env.AI_VERIFICATION_API_URL}/verify-user`,
             formData,
             {
                 headers: formData.getHeaders(),
-                timeout: 10000 // prevent hanging
+                timeout: 300000 // ✅ 5 minutes
             }
         );
 
@@ -49,21 +56,33 @@ const performAsyncVerification = async (userId, imageUrl) => {
               };
 
         await User.updateOne(
-            { _id: userId }, // ✅ FIXED
+            { _id: userId },
             updateData,
             { arrayFilters: [{ "elem.level": "AI" }] }
         );
 
-        console.log("AI verification updated in DB");
+        console.log("✅ AI verification completed for:", userId);
+
     } catch (error) {
-        console.error("AI Verification FAILED:", error.message);
+        console.error(`❌ Attempt ${attempt} failed:`, error.message);
+
+        if (attempt < MAX_RETRIES) {
+            console.log(`🔁 Retrying... (${attempt + 1}/${MAX_RETRIES})`);
+
+            await sleep(5000); // wait 5 sec before retry
+
+            return performAsyncVerification(userId, imageUrl, attempt + 1);
+        }
+
+        console.error("🚫 All retries failed for:", userId);
 
         await User.updateOne(
             { _id: userId },
             {
                 $set: {
                     "verification.$[elem].status": "rejected",
-                    "verification.$[elem].remarks": "AI verification failed",
+                    "verification.$[elem].remarks":
+                        "AI verification failed after multiple attempts",
                     "verification.$[elem].verifiedAt": new Date()
                 }
             },
@@ -111,7 +130,7 @@ export const createUserService = async (userData) => {
 
     setImmediate(() => {
         performAsyncVerification(user._id, userData.imageUrl)
-            .catch(err => console.error("Background job error:", err));
+            .catch(err => console.error("Background job crashed:", err));
     });
 
     return user;
