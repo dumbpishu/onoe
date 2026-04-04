@@ -80,3 +80,12 @@ export const getEROStats = async () => {
         throw new Error(error.response?.data?.message || "Failed to fetch ERO stats");
     }
 };
+
+export const getBLOStats = async () => {
+    try {
+        const response = await api.get("/dashboard/blo-stats");
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to fetch BLO stats");
+    }
+};

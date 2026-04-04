@@ -18,6 +18,7 @@ import { CEODashboard } from "../dashboard/CEO/CEODashboard";
 import { DEODashboard } from "../dashboard/DEO/DEODashboard";
 import { ERODashboard } from "../dashboard/ERO/ERODashboard";
 import { BLODashboard } from "../dashboard/BLO/BLODashboard";
+import { ManageVoters } from "../dashboard/BLO/ManageVoters";
 import { VerifyVoters } from "../dashboard/VerifyVoters";
 import { MobilityVerification } from "../dashboard/MobilityVerification";
 import { CreatePollingBoothOfficer } from "../dashboard/CreatePollingBoothOfficer";
@@ -70,6 +71,10 @@ export const appRoutes = createBrowserRouter([
             {
                 path: "blo",
                 element: <BLODashboard />
+            },
+            {
+                path: "manage-voters",
+                element: <ManageVoters />
             },
             {
                 path: "verify-voters",

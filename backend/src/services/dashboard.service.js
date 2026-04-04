@@ -84,3 +84,22 @@ export const getERODashboardStats = async (assembly, district, state) => {
         booths: boothsCount
     };
 };
+
+export const getBLODashboardStats = async (boothNumber, assembly, district, state) => {
+    const [votersCount, pendingVerifications] = await Promise.all([
+        mongoose.connection.db.collection("voters").countDocuments({ state, district, assembley: assembly, boothNumber }),
+        mongoose.connection.db.collection("users").countDocuments({ 
+            state, 
+            district, 
+            assembley: assembly, 
+            boothNumber,
+            "verification.level": "BLO",
+            "verification.status": "pending"
+        })
+    ]);
+
+    return {
+        voters: votersCount,
+        pending: pendingVerifications
+    };
+};
