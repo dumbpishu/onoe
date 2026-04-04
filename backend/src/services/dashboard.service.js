@@ -29,25 +29,23 @@ export const getDashboardStats = async () => {
 };
 
 export const getCEODashboardStats = async (state) => {
-    const [votersCount, deosCount, erosCount, blosCount, boothsCount] = await Promise.all([
+    const [votersCount, deosCount, erosCount, blosCount] = await Promise.all([
         mongoose.connection.db.collection("voters").countDocuments({ state }),
         mongoose.connection.db.collection("officers").countDocuments({ role: "DEO", "postingAddress.state": state }),
         mongoose.connection.db.collection("officers").countDocuments({ role: "ERO", "postingAddress.state": state }),
-        mongoose.connection.db.collection("officers").countDocuments({ role: "BLO", "postingAddress.state": state }),
-        mongoose.connection.db.collection("booths").countDocuments({ state })
+        mongoose.connection.db.collection("officers").countDocuments({ role: "BLO", "postingAddress.state": state })
     ]);
 
     return {
         voters: votersCount,
         deos: deosCount,
         eros: erosCount,
-        blos: blosCount,
-        booths: boothsCount
+        blos: blosCount
     };
 };
 
 export const getDEODashboardStats = async (district, state) => {
-    const [erosCount, blosCount, votersCount, boothsCount, assemblies] = await Promise.all([
+    const [erosCount, blosCount, boothsCount, assemblies] = await Promise.all([
         mongoose.connection.db.collection("officers").countDocuments({ 
             role: "ERO", 
             "postingAddress.state": state,
@@ -58,16 +56,31 @@ export const getDEODashboardStats = async (district, state) => {
             "postingAddress.state": state,
             "postingAddress.district": district 
         }),
-        mongoose.connection.db.collection("voters").countDocuments({ state, district }),
         mongoose.connection.db.collection("booths").countDocuments({ state, district }),
         mongoose.connection.db.collection("voters").distinct("assembley", { state, district })
     ]);
 
     return {
-        voters: votersCount,
         eros: erosCount,
         blos: blosCount,
         booths: boothsCount,
         assemblies: assemblies.length
+    };
+};
+
+export const getERODashboardStats = async (assembly, district, state) => {
+    const [blosCount, boothsCount] = await Promise.all([
+        mongoose.connection.db.collection("officers").countDocuments({ 
+            role: "BLO", 
+            "postingAddress.state": state,
+            "postingAddress.district": district,
+            "postingAddress.assembley": assembly 
+        }),
+        mongoose.connection.db.collection("booths").countDocuments({ state, district, assembley: assembly })
+    ]);
+
+    return {
+        blos: blosCount,
+        booths: boothsCount
     };
 };

@@ -10,8 +10,6 @@ export const DEODashboard = () => {
     const [stats, setStats] = useState({
         eros: 0,
         blos: 0,
-        voters: 0,
-        booths: 0,
         assemblies: 0
     });
     const [loading, setLoading] = useState(true);
@@ -28,8 +26,6 @@ export const DEODashboard = () => {
                 setStats({
                     eros: responseData.eros || 0,
                     blos: responseData.blos || 0,
-                    voters: responseData.voters || 0,
-                    booths: responseData.booths || 0,
                     assemblies: responseData.assemblies || 0
                 });
             } catch (error) {
@@ -37,8 +33,6 @@ export const DEODashboard = () => {
                 setStats({
                     eros: 0,
                     blos: 0,
-                    voters: 0,
-                    booths: 0,
                     assemblies: 0
                 });
             } finally {
@@ -75,18 +69,7 @@ export const DEODashboard = () => {
                 </Button>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="border-l-4 border-l-[#FF9933]">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-600">Total Voters</CardTitle>
-                        <Users className="h-4 w-4 text-[#FF9933]" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-[#000080]">{stats.voters?.toLocaleString()}</div>
-                        <p className="text-xs text-gray-500">In your district</p>
-                    </CardContent>
-                </Card>
-
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <Card className="border-l-4 border-l-[#138808]">
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                         <CardTitle className="text-sm font-medium text-gray-600">Total EROs</CardTitle>

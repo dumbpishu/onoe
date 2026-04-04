@@ -11,7 +11,6 @@ export const CEODashboard = () => {
         deos: 0,
         eros: 0,
         blos: 0,
-        booths: 0,
         voters: 0
     });
     const [loading, setLoading] = useState(true);
@@ -36,7 +35,6 @@ export const CEODashboard = () => {
                     deos: responseData.deos || 0,
                     eros: responseData.eros || 0,
                     blos: responseData.blos || 0,
-                    booths: responseData.booths || 0,
                     voters: responseData.voters || 0
                 });
             } catch (error) {
@@ -45,7 +43,6 @@ export const CEODashboard = () => {
                     deos: 0,
                     eros: 0,
                     blos: 0,
-                    booths: 0,
                     voters: 0
                 });
             } finally {

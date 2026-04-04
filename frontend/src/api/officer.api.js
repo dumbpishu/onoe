@@ -71,3 +71,12 @@ export const getDEOStats = async () => {
         throw new Error(error.response?.data?.message || "Failed to fetch DEO stats");
     }
 };
+
+export const getEROStats = async () => {
+    try {
+        const response = await api.get("/dashboard/ero-stats");
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to fetch ERO stats");
+    }
+};

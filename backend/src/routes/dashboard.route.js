@@ -1,5 +1,5 @@
 import express from "express";
-import { getECIStats, getCEOStats, getDEOStats } from "../controllers/dashboard.controller.js";
+import { getECIStats, getCEOStats, getDEOStats, getEROStats } from "../controllers/dashboard.controller.js";
 import { authenticateOfficer } from "../middlewares/officerAuth.js";
 
 const router = express.Router();
@@ -7,5 +7,6 @@ const router = express.Router();
 router.get("/eci-stats", getECIStats);
 router.get("/ceo-stats", authenticateOfficer, getCEOStats);
 router.get("/deo-stats", authenticateOfficer, getDEOStats);
+router.get("/ero-stats", authenticateOfficer, getEROStats);
 
 export default router;
