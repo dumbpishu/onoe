@@ -7,40 +7,59 @@ import { Voter } from "../models/voter.model.js";
 
 const performAsyncVerification = async (userId, imageUrl) => {
     try {
+        console.log("AI Verification started for:", userId);
+
         let formData = new FormData();
+
         if (imageUrl) {
-            const imageResponse = await axios.get(imageUrl, { responseType: "arraybuffer" });
+            const imageResponse = await axios.get(imageUrl, {
+                responseType: "arraybuffer"
+            });
+
             formData.append("file", Buffer.from(imageResponse.data), "image.jpg");
         }
 
-        const response = await axios.post(`${process.env.AI_VERIFICATION_API_URL}/verify-user`, formData, {
-            headers: formData.getHeaders()
-        });
+        const response = await axios.post(
+            `${process.env.AI_VERIFICATION_API_URL}/verify-user`,
+            formData,
+            {
+                headers: formData.getHeaders(),
+                timeout: 10000 // prevent hanging
+            }
+        );
+
+        console.log("AI Response:", response.data);
 
         const updateData = response.data?.exists
             ? {
-                $set: {
-                    "verification.$[elem].status": "rejected",
-                    "verification.$[elem].remarks": "A user with similar facial features already exists",
-                    "verification.$[elem].verifiedAt": new Date()
-                }
-            }
+                  $set: {
+                      "verification.$[elem].status": "rejected",
+                      "verification.$[elem].remarks":
+                          "A user with similar facial features already exists",
+                      "verification.$[elem].verifiedAt": new Date()
+                  }
+              }
             : {
-                $set: {
-                    "verification.$[elem].status": "verified",
-                    "verification.$[elem].remarks": "Auto-verified by AI system - No similar facial features found",
-                    "verification.$[elem].verifiedAt": new Date()
-                }
-            };
+                  $set: {
+                      "verification.$[elem].status": "verified",
+                      "verification.$[elem].remarks":
+                          "Auto-verified by AI system - No similar facial features found",
+                      "verification.$[elem].verifiedAt": new Date()
+                  }
+              };
 
-        await User.findOneAndUpdate(
-            { _id: userId, "verification.level": "AI" },
+        await User.updateOne(
+            { _id: userId }, // ✅ FIXED
             updateData,
-            { arrayFilters: [{ elem: { level: "AI" } }] }
+            { arrayFilters: [{ "elem.level": "AI" }] }
         );
+
+        console.log("AI verification updated in DB");
     } catch (error) {
-        await User.findOneAndUpdate(
-            { _id: userId, "verification.level": "AI" },
+        console.error("AI Verification FAILED:", error.message);
+
+        await User.updateOne(
+            { _id: userId },
             {
                 $set: {
                     "verification.$[elem].status": "rejected",
@@ -48,7 +67,7 @@ const performAsyncVerification = async (userId, imageUrl) => {
                     "verification.$[elem].verifiedAt": new Date()
                 }
             },
-            { arrayFilters: [{ elem: { level: "AI" } }] }
+            { arrayFilters: [{ "elem.level": "AI" }] }
         );
     }
 };
@@ -90,7 +109,10 @@ export const createUserService = async (userData) => {
         throw new ApiError(500, "Failed to create user");
     }
 
-    performAsyncVerification(user._id, userData.imageUrl);
+    setImmediate(() => {
+        performAsyncVerification(user._id, userData.imageUrl)
+            .catch(err => console.error("Background job error:", err));
+    });
 
     return user;
 };
