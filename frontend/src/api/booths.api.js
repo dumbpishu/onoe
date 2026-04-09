@@ -3,6 +3,7 @@ import api from "@/lib/axios";
 export const getAllBooths = async (params = {}) => {
     try {
         const response = await api.get("/booths/all", { params });
+        console.log(response.data);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || "Failed to fetch booths");
