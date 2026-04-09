@@ -7,6 +7,7 @@ export const getACSByPCCodeService = async (pc_code) => {
     }
 
     const acs = await mongoose.connection.db.collection("acs").find({ pc_code }).toArray();
+    console.log("ACS found for PC code:", acs);
 
     if (!acs || acs.length === 0) {
         throw new ApiError(404, "ACS not found for the given PC code");
